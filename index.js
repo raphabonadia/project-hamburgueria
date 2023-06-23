@@ -79,24 +79,23 @@ app.delete('/orders/:id', checkOrderId, (request, response) =>{
 })
 
 
- app.get('orders/:id', checkOrderId, (request, response) =>{
+ app.get('/orders/:id', checkOrderId, (request, response) =>{
    const index = request.userIndex
-   const {id} = request.params.id
+   
 
     return response.json(orders[index])
  })
 
-app.patch('orders/:id',checkOrderId, (request, response) =>{
-    const id = request.userId
-    const order = orders.find(order => order.id === id)
+app.patch('/orders/:id',checkOrderId, (request, response) =>{
+    const {orders, clientName, price} = request.body
+    const newOrder = {id:uuid.v4(), orders, clientName, price, status:'Pronto'}
 
-    if (!order) {
-    return response.status(404).json({ message: 'Pedido não encontrado' })
-   }
+adicionarALista(newOrder) 
 
-    const newStatus = order.status('Pronto')
+ return response.status(201).json(newOrder)
     
-    return response.status(200).json({message: 'Status do pedido Atualizado para "Pronto"'})
+
+   
  })
 
 
